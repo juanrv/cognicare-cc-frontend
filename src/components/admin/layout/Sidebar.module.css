@@ -1,0 +1,72 @@
+/* src/components/admin/layout/Sidebar.module.css */
+.sidebar {
+  width: 260px; /* Un poco más ancho */
+  background-color: var(--color-primario, #2c3e50);
+  color: var(--color-texto-sobre-oscuro, white);
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+  height: 100vh; /* Asegura que ocupe toda la altura */
+  box-sizing: border-box;
+}
+
+.sidebar h3 {
+  text-align: center;
+  font-size: 1.4em;
+  margin-top: 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-secundario, #4a6fa5);
+  padding-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.navList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navItem {
+  margin-bottom: 12px;
+}
+
+.navLink {
+  color: var(--color-texto-sobre-oscuro, #ecf0f1);
+  text-decoration: none;
+  display: block;
+  padding: 12px 18px;
+  border-radius: var(--radio-borde, 6px);
+  transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
+  font-size: 1.05em;
+}
+
+.navLink:hover {
+  background-color: var(--color-secundario-hover, #5a82c2);
+  color: white;
+  padding-left: 22px; /* Efecto sutil al hacer hover */
+}
+
+.navLinkActive { /* Estilo para el NavLink activo */
+  background-color: var(--color-secundario, #4a6fa5);
+  color: white;
+  font-weight: bold;
+}
+
+.logoutButton {
+  margin-top: auto; /* Empuja el botón al final */
+  padding: 12px 15px;
+  background-color: var(--color-error, #e74c3c);
+  color: var(--color-texto-sobre-oscuro, white);
+  border: none;
+  border-radius: var(--radio-borde, 6px);
+  cursor: pointer;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.logoutButton:hover {
+  background-color: var(--color-error-hover, #c0392b);
+}

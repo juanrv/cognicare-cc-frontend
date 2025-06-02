@@ -1,0 +1,15 @@
+
+.adminLayout {
+  display: flex;
+  height: 100vh;
+  width: 100vw; /* Asegura que ocupe toda la pantalla */
+  background-color: var(--color-fondo-base, #f4f6f8); /* Variable de index.css */
+}
+
+.adminContent {
+  flex-grow: 1; /* Ocupa el espacio restante al lado del sidebar */
+  padding: 25px; /* Un poco más de padding */
+  overflow-y: auto; /* Scroll si el contenido es largo */
+  height: 100vh; /* Para que el scroll funcione dentro de esta área */
+  box-sizing: border-box;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '../../App.css';
+import styles from './LoginForm.module.css';
+
 
 // Recibimos 'onLoginExitoso' como prop
 function LoginForm({ onLoginExitoso }) {
@@ -42,7 +43,7 @@ function LoginForm({ onLoginExitoso }) {
           apellidos: dataRespuesta.user.apellidos,
           rol: dataRespuesta.role, // Usamos el rol de la respuesta
         }));
-        setMessage(`¡Bienvenido ${dataRespuesta.user.nombres}! Rol: ${dataRespuesta.role}`);
+        
         if (onLoginExitoso) {
           onLoginExitoso(dataRespuesta.role, dataRespuesta.user); // Pasamos el rol y el usuario
         }
@@ -52,23 +53,24 @@ function LoginForm({ onLoginExitoso }) {
     } catch (error) {
       setMessage('Error de conexión. ¿El backend está corriendo?');
     } finally {
-        setCargando(false);
+      setCargando(false);
     }
   };
 
   return (
-    <div className="login-box">
+    <div className={styles.loginBox}> {/* Antes era className="login-box" */}
       <h1>Inicio de Sesión</h1>
       <form onSubmit={handleLogin}>
-        <div>
+        <div className={styles.formGroup}> {/* Clase opcional para agrupar label e input */}
           <label>Rol:</label>
           <select value={role} onChange={(e) => setRole(e.target.value)} disabled={cargando}>
             <option value="admin">Administrador</option>
             <option value="entrenador">Entrenador</option>
           </select>
         </div>
+
         {role === 'entrenador' && (
-          <div>
+          <div className={styles.formGroup}>
             <label>Correo Electrónico:</label>
             <input
               type="email"
@@ -79,9 +81,10 @@ function LoginForm({ onLoginExitoso }) {
             />
           </div>
         )}
-        <div>
+
+        <div className={styles.formGroup}>
           <label>
-            {role === 'admin' ? 'Contraseña' : 'Contraseña:'}
+            {role === 'admin' ? 'Contraseña:' : 'Contraseña:'}
           </label>
           <input
             type={role === 'admin' ? 'password' : 'password'}
@@ -91,11 +94,16 @@ function LoginForm({ onLoginExitoso }) {
             disabled={cargando}
           />
         </div>
+        
         <button type="submit" disabled={cargando}>
             {cargando ? 'Ingresando...' : 'Ingresar'}
         </button>
       </form>
-      {message && <p className={`message ${message.startsWith('Error') ? 'error' : 'success'}`}>{message}</p>}
+      {message && (
+        <p className={`${styles.message} ${message.startsWith('Error') ? styles.error : styles.success}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }

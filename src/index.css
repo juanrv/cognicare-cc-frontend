@@ -1,68 +1,119 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+/* src/index.css */
+
+/* -------------------- RESET BÁSICO Y BOX-SIZING -------------------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* -------------------- ESTILOS GLOBALES PARA HTML Y BODY -------------------- */
+html {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif; /* Fuente global */
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-fondo-base, #f0f2f5); 
+  color: var(--color-texto-base, #333);
+  /* 'display: flex' y 'place-items: center' de Vite pueden quitarse si no quieres ese centrado global */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#root {
+  width: 100%;
+  height: 100vh; /* Asegura que la app ocupe toda la altura */
+  display: flex; /* Puede ser útil si App.jsx tiene un solo hijo que deba expandirse */
+  flex-direction: column; /* Opcional, depende de tu estructura de App */
 }
 
-button {
-  border-radius: 8px;
+/* -------------------- VARIABLES CSS GLOBALES (CUSTOM PROPERTIES) -------------------- */
+:root {
+  /* Paleta de Colores */
+  --color-primario: #2c3e50;
+  --color-primario-hover: #34495e;
+  --color-secundario: #4a6fa5;
+  --color-secundario-hover: #5a82c2;
+  --color-acento: #4caf50;
+  --color-acento-hover: #45a049;
+  --color-advertencia: #f39c12;
+  --color-error: #e74c3c;
+  --color-error-hover: #c0392b;
+
+  /* Colores de Texto */
+  --color-texto-principal: #333333;
+  --color-texto-secundario: #555555;
+  --color-texto-sobre-oscuro: #ecf0f1;
+  --color-texto-enlace: var(--color-secundario);
+
+  /* Colores de Fondo */
+  --color-fondo-base: #f4f7f6;
+  --color-fondo-contenedor: #ffffff;
+  --color-fondo-input: #ffffff;
+  --color-borde-input: #ced4da;
+
+  /* Tipografía */
+  --fuente-principal: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif; /* Redundante si está en html, pero ok */
+  --tamano-fuente-base: 16px;
+  --tamano-fuente-pequeno: 0.875rem; /* 14px si base es 16px */
+  --tamano-fuente-grande: 1.25rem;  /* 20px si base es 16px */
+
+  /* Otros */
+  --radio-borde: 6px;
+  --sombra-caja: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------- ESTILOS BASE PARA ELEMENTOS COMUNES (OPCIONAL) -------------------- */
+a {
+  font-weight: 500;
+  color: var(--color-texto-enlace);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button { /* Estilo base MUY genérico para botones */
+  border-radius: var(--radio-borde);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.2s ease-in-out, border-color 0.25s;
+  background-color: #f9f9f9; /* Un color base claro */
+  color: var(--color-texto-principal);
 }
 button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  border-color: var(--color-primario);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* Mensajes Globales (si decides que son globales) */
+.message {
+  margin-top: 20px;
+  padding: 12px 15px;
+  border-radius: var(--radio-borde);
+  font-weight: bold;
+  text-align: center;
+}
+.message.success {
+  background-color: rgba(76, 175, 80, 0.85); /* Ligeramente menos transparente */
+  color: #fff;
+  border: 1px solid rgba(76, 175, 80, 0.9);
+}
+.message.error {
+  background-color: rgba(231, 76, 60, 0.85); /* Ligeramente menos transparente */
+  color: #fff;
+  border: 1px solid rgba(231, 76, 60, 0.9);
 }

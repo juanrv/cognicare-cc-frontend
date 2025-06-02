@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
-import LoginForm from '../components/login/LoginForm'; // Ajusta la ruta si es necesario
-import '../App.css';
+import LoginForm from '../components/Login/LoginForm';
+import styles from './InicioPage.module.css';
 
 const backgroundImages = [
   '/assets/Biblioteca.webp',
@@ -10,7 +11,6 @@ const backgroundImages = [
   '/assets/Laboratorio.webp'
 ];
 
-// Recibe onLoginExitoso como prop
 function InicioPage({ onLoginExitoso }) {
   const [view, setView] = useState('start');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -28,23 +28,23 @@ function InicioPage({ onLoginExitoso }) {
     setView('login');
   };
 
+ 
   const backgroundStyle = {
     backgroundImage: `url(${backgroundImages[currentImageIndex]})`,
   };
 
   return (
-    <div className="App" style={backgroundStyle}>
-      <div className="overlay">
+    <div className={styles.inicioPageContainer} style={backgroundStyle}>
+      <div className={styles.overlay}>
         {view === 'start' && (
-          <div className="start-screen">
-            <h1>Bienvenido a CC</h1>
+          <div className={styles.startScreen}>
+            <h1>Bienvenido a Cognicare</h1>
             <p>Tu plataforma de entrenamiento cognitivo.</p>
-            <button className="start-button" onClick={handleStartClick}>
+            <button className={styles.startButton} onClick={handleStartClick}>
               Iniciar
             </button>
           </div>
         )}
-        {/* Pasa onLoginExitoso a LoginForm */}
         {view === 'login' && <LoginForm onLoginExitoso={onLoginExitoso} />}
       </div>
     </div>

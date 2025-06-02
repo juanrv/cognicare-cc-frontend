@@ -1,67 +1,52 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import InicioPage from './pages/InicioPage';
-import AdminHomePage from './pages/admin/AdminHomePage'; // Crearemos esta página
+import AdminHomePage from './pages/admin/AdminHomePage';
 import RegistrarEntrenadorPage from './pages/admin/RegistrarEntrenadorPage';
-import Sidebar from './components/admin/layout/Sidebar'; // Crearemos este componente
-import './App.css';
+// 1. Importa AdminLayout desde su nueva ubicación
+import AdminLayout from './components/admin/layout/AdminLayout';
+import './App.css'; // App.css ahora debería tener menos cosas
+
 
 /**
- * Componente para proteger rutas basado en autenticación y rol.
+ * Componente ProtectedRoute para proteger rutas según autenticación y rol
  */
+
 function ProtectedRoute({ children, isAuthenticated, requiredRole, userRole }) {
   if (!isAuthenticated) {
     return <Navigate to="/inicio" replace />;
   }
   if (requiredRole && userRole !== requiredRole) {
-    // Opcional: redirigir a una página de "no autorizado" o de vuelta al home del rol
-    return <Navigate to="/inicio" replace />; // Simplificado por ahora
+    return <Navigate to="/inicio" replace />;
   }
   return children;
 }
 
-/**
- * Layout para las páginas de administración, incluye Sidebar y el contenido de la página (Outlet).
- */
-function AdminLayout({ onLogout }) {
-  return (
-    <div className="admin-layout">
-      <Sidebar onLogout={onLogout} />
-      <main className="admin-content">
-        <Outlet /> {/* Aquí se renderizarán las sub-rutas de admin */}
-      </main>
-    </div>
-  );
-}
 
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null); // Guarda {nombres, rol, id, etc.}
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
-  // Al cargar la app, verificar si hay datos de usuario en localStorage
   useEffect(() => {
     const storedUserData = localStorage.getItem('userData');
     const token = localStorage.getItem('authToken');
     if (storedUserData && token) {
       try {
         setCurrentUser(JSON.parse(storedUserData));
-      } catch (e) {
-        console.error("Error parsing stored user data", e);
-        localStorage.removeItem('userData');
-        localStorage.removeItem('authToken');
-      }
+      } catch (e) { console.error("Error parsing stored user data", e); localStorage.clear(); }
     }
   }, []);
 
   const handleLoginSuccess = (rol, userData) => {
-    setCurrentUser({ ...userData, rol }); // userData ya tiene id, nombres, etc.
+    setCurrentUser({ ...userData, rol });
     if (rol === 'admin') {
       navigate('/admin');
     } else if (rol === 'entrenador') {
-      navigate('/entrenador'); // A futuro crear esta ruta
+      navigate('/entrenador');
     } else {
-      navigate('/'); // Fallback
+      navigate('/');
     }
   };
 
@@ -85,36 +70,24 @@ function App() {
             )
         }
       />
+      <Route path="/" element={<Navigate to="/inicio" replace />} />
+
 
       {/* Rutas de Administrador */}
       <Route
-        path="/admin/*" // El asterisco indica rutas anidadas
+        path="/admin/*"
         element={
           <ProtectedRoute isAuthenticated={!!currentUser} userRole={currentUser?.rol} requiredRole="admin">
+            {/* 2. Usa el AdminLayout importado */}
             <AdminLayout onLogout={handleLogout} />
           </ProtectedRoute>
         }
       >
-        <Route index element={<AdminHomePage />} /> {/* /admin */}
-        <Route path="registrar-entrenador" element={<RegistrarEntrenadorPage />} /> {/* /admin/registrar-entrenador */}
-        {/* Aquí irían más rutas de admin: /admin/listar-entrenadores, etc. */}
+        <Route index element={<AdminHomePage />} />
+        <Route path="registrar-entrenador" element={<RegistrarEntrenadorPage />} />
       </Route>
 
-      {/* A futuro: Rutas de Entrenador
-      <Route
-        path="/entrenador/*"
-        element={
-          <ProtectedRoute isAuthenticated={!!currentUser} userRole={currentUser?.rol} requiredRole="entrenador">
-            <EntrenadorLayout onLogout={handleLogout} /> // Necesitarías un EntrenadorLayout
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<EntrenadorHomePage />} />
-      </Route>
-      */}
-
-      {/* Redirección por defecto si ninguna ruta coincide y no está logueado */}
-      <Route path="*" element={<Navigate to="/inicio" replace />} />
+      {/* <Route path="*" element={<Navigate to="/inicio" replace />} /> */} {/* Comentado temporalmente si el de arriba lo cubre */}
     </Routes>
   );
 }
