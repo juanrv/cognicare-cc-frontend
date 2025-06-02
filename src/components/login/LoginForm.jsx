@@ -81,10 +81,10 @@ function LoginForm({ onLoginExitoso }) {
         )}
         <div>
           <label>
-            {role === 'admin' ? 'N° Documento:' : 'Contraseña (N° Doc):'}
+            {role === 'admin' ? 'Contraseña' : 'Contraseña:'}
           </label>
           <input
-            type={role === 'admin' ? 'text' : 'password'}
+            type={role === 'admin' ? 'password' : 'password'}
             value={documento}
             onChange={(e) => setDocumento(e.target.value)}
             required
