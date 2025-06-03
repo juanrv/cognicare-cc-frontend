@@ -1,0 +1,33 @@
+
+
+.homePageContainer {
+  padding: var(--espacio-lg, 24px) var(--espacio-xl, 32px);
+  background-color: var(--color-fondo-contenedor, #ffffff);
+  border-radius: var(--radio-borde, 8px);
+  box-shadow: var(--sombra-caja, 0 2px 10px rgba(0,0,0,0.05));
+  text-align: left; /* O center, según prefieras para esta página */
+}
+
+.title {
+  font-family: var(--fuente-principal);
+  color: var(--color-primario-uva, #003366); /* Usando las variables de la U */
+  font-size: var(--tamano-fuente-titulo-h2, 2rem);
+  margin-bottom: var(--espacio-md, 16px);
+  border-bottom: 2px solid var(--color-secundario-uva, #0693e3);
+  padding-bottom: var(--espacio-sm, 8px);
+}
+
+.welcomeMessage {
+  font-family: var(--fuente-secundaria, 'Open Sans', sans-serif);
+  font-size: var(--tamano-fuente-lg, 1.2rem);
+  color: var(--color-texto-principal, #333);
+  margin-bottom: var(--espacio-sm, 8px);
+  line-height: 1.6;
+}
+
+.infoMessage {
+  font-family: var(--fuente-secundaria, 'Open Sans', sans-serif);
+  font-size: var(--tamano-fuente-md, 1rem);
+  color: var(--color-texto-secundario, #555);
+  line-height: 1.6;
+}

@@ -1,31 +1,31 @@
 /* src/components/Login/LoginForm.module.css */
-.loginBox {
+.loginBox { /* Renombrado de .login-box a loginBox para el objeto styles */
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   padding: 40px;
-  border-radius: var(--radio-borde, 15px); /* Usando variable global o fallback */
+  border-radius: 15px; /* Puedes usar var(--radio-borde) si está en index.css */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   border: 1px solid rgba(255, 255, 255, 0.18);
   min-width: 300px;
   max-width: 400px;
-  color: var(--color-texto-sobre-oscuro, white); /* Usando variable global o fallback */
+  color: var(--color-texto-sobre-oscuro); /* Asumiendo que este es el contexto */
 }
 
 .loginBox h1 {
   margin-top: 0;
   margin-bottom: 30px;
-  /* El color lo hereda de .loginBox o puede ser específico */
+  /* color: #fff;  Ya heredado o usar variable */
 }
 
-/* Estilos para los divs que contienen label e input, si necesitas un estilo general para ellos */
-.formGroup {
+.loginBox div {
   margin-bottom: 20px;
   text-align: left;
 }
 
-.loginBox label { /* Si es un estilo general para todas las etiquetas dentro */
+.loginBox label {
   display: block;
   margin-bottom: 8px;
+  /* color: #eee; Ya heredado o usar variable */
   font-weight: bold;
 }
 
@@ -35,7 +35,7 @@
   padding: 12px;
   border: 1px solid #555;
   background-color: rgba(0, 0, 0, 0.3);
-  border-radius: var(--radio-borde, 5px);
+  border-radius: var(--radio-borde, 5px); /* Usando variable global o fallback */
   color: var(--color-texto-sobre-oscuro, white);
   box-sizing: border-box;
   font-size: 1em;
@@ -51,11 +51,11 @@
 }
 
 .loginBox select option {
-  background-color: #333;
+  background-color: #333; /* O un color de tu paleta */
   color: white;
 }
 
-.loginBox button { /* O podrías usar .submitButton si quieres un nombre más específico */
+.loginBox button {
   width: 100%;
   padding: 15px;
   background-color: var(--color-acento);
@@ -72,6 +72,8 @@
   background-color: var(--color-acento-hover);
 }
 
+/* Mantenemos los estilos de .message aquí si LoginForm los usa directamente */
+/* O podrían ser un componente <Message> separado con sus propios estilos */
 .message {
   margin-top: 20px;
   padding: 10px;
@@ -79,11 +81,11 @@
   font-weight: bold;
   text-align: center;
 }
-.message.success { /* Para combinar clases: styles.message + ' ' + styles.success */
+.message.success {
   background-color: rgba(76, 175, 80, 0.7);
-  color: #e8f5e9;
+  color: #e8f5e9; /* Un color claro para texto sobre verde */
 }
 .message.error {
   background-color: rgba(244, 67, 54, 0.7);
-  color: #ffebee;
+  color: #ffebee; /* Un color claro para texto sobre rojo */
 }

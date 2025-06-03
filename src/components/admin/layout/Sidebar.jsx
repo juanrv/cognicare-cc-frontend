@@ -1,7 +1,6 @@
-
-import React from 'react';
-import { NavLink } from 'react-router-dom'; // Usamos NavLink para el estilo activo
-import styles from './Sidebar.module.css'; // Importaremos su propio CSS Module
+import React from "react";
+import { NavLink } from "react-router-dom"; // Usamos NavLink para el estilo activo
+import styles from "./Sidebar.module.css"; // Importaremos su propio CSS Module
 
 function Sidebar({ onLogout }) {
   return (
@@ -12,7 +11,11 @@ function Sidebar({ onLogout }) {
           <li className={styles.navItem}>
             <NavLink
               to="/admin" // Ruta base del admin
-              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.navLink} ${styles.navLinkActive}`
+                  : styles.navLink
+              }
               end // 'end' es importante para que no coincida con subrutas como /admin/otra-cosa
             >
               Inicio Admin
@@ -21,9 +24,25 @@ function Sidebar({ onLogout }) {
           <li className={styles.navItem}>
             <NavLink
               to="/admin/registrar-entrenador"
-              className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.navLink} ${styles.navLinkActive}`
+                  : styles.navLink
+              }
             >
               Registrar Entrenador
+            </NavLink>
+          </li>
+          <li className={styles.navItem}>
+            <NavLink
+              to="/admin/gestionar-entrenadores"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.navLink} ${styles.navLinkActive}`
+                  : styles.navLink
+              }
+            >
+              Gestionar Entrenadores
             </NavLink>
           </li>
           {/* Aquí añadirías más enlaces a futuro */}

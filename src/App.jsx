@@ -1,12 +1,11 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import InicioPage from './pages/InicioPage';
 import AdminHomePage from './pages/admin/AdminHomePage';
 import RegistrarEntrenadorPage from './pages/admin/RegistrarEntrenadorPage';
-// 1. Importa AdminLayout desde su nueva ubicación
+import GestionEntrenadoresPage from './pages/admin/GestionEntrenadoresPage';
 import AdminLayout from './components/admin/layout/AdminLayout';
-import './App.css'; // App.css ahora debería tener menos cosas
+import './App.css'; 
 
 
 /**
@@ -85,6 +84,7 @@ function App() {
       >
         <Route index element={<AdminHomePage />} />
         <Route path="registrar-entrenador" element={<RegistrarEntrenadorPage />} />
+        <Route path="gestionar-entrenadores" element={<GestionEntrenadoresPage />} />
       </Route>
 
       {/* <Route path="*" element={<Navigate to="/inicio" replace />} /> */} {/* Comentado temporalmente si el de arriba lo cubre */}

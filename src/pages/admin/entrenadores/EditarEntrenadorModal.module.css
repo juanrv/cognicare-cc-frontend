@@ -1,0 +1,143 @@
+/* src/components/admin/entrenadores/EditarEntrenadorModal.module.css */
+/* Estilos muy similares al modal de RegistrarEntrenadorPage, puedes copiarlos y adaptarlos */
+/* o centralizar los estilos de modal si son idénticos */
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modalContent {
+  background-color: var(--color-fondo-contenedor, white);
+  padding: 30px 35px;
+  border-radius: var(--radio-borde, 10px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  width: 90%;
+  max-width: 600px; /* Modal un poco más ancho para el formulario de edición */
+  color: var(--color-texto-principal);
+  animation: fadeInModal 0.3s ease-out; /* Misma animación de antes */
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modalContent h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+  color: var(--color-primario-uva);
+  font-size: 1.7em;
+}
+
+.modalContent p strong {
+    font-weight: 600;
+    color: var(--color-texto-secundario);
+}
+
+.formGroup { /* Reutiliza la clase de RegistrarEntrenadorPage si es igual */
+  margin-bottom: 20px;
+}
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-texto-secundario, #555);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+.formGroup input[type="text"],
+.formGroup input[type="email"],
+.formGroup input[type="date"] {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1em;
+  border: 1px solid var(--color-borde-input, #ced4da);
+  border-radius: var(--radio-borde, 6px);
+  /* ... más estilos ... */
+}
+
+.listaFacultadesCheckboxes {
+  max-height: 150px; /* Ajusta altura si es necesario */
+  overflow-y: auto;
+  border: 1px solid var(--color-borde-input);
+  padding: 10px;
+  border-radius: var(--radio-borde);
+  margin-bottom: 15px;
+}
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.checkboxItem input[type="checkbox"] {
+  margin-right: 10px;
+  width: auto;
+}
+.checkboxItem label {
+  font-weight: normal;
+  margin-bottom: 0;
+}
+
+.botonesModal {
+  display: flex;
+  justify-content: flex-end; /* Alinea botones a la derecha */
+  gap: 15px; /* Espacio entre botones */
+  margin-top: 30px;
+}
+
+.botonGuardar, .botonCancelar {
+  padding: 10px 25px;
+  font-size: 1em;
+  font-weight: 500;
+  border-radius: var(--radio-borde);
+  border: none;
+  cursor: pointer;
+}
+
+.botonGuardar {
+  background-color: var(--color-acento, #4caf50);
+  color: white;
+}
+.botonGuardar:hover {
+  background-color: var(--color-acento-hover, #45a049);
+}
+.botonGuardar:disabled {
+  background-color: #ccc;
+}
+
+.botonCancelar {
+  background-color: #6c757d; /* Un gris para cancelar */
+  color: white;
+}
+.botonCancelar:hover {
+  background-color: #5a6268;
+}
+
+/* Estilos para mensajes dentro del modal */
+.message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: var(--radio-borde, 5px);
+  font-weight: normal; /* Un poco menos de énfasis que los mensajes de página */
+  text-align: center;
+  font-size: 0.9em;
+}
+.message.success {
+  background-color: rgba(var(--color-verde-exito-rgb, 76, 175, 80), 0.15);
+  color: var(--color-verde-exito, #28a745);
+  border: 1px solid var(--color-verde-exito, #28a745);
+}
+.message.error {
+  background-color: rgba(var(--color-rojo-error-rgb, 220, 53, 69), 0.15);
+  color: var(--color-rojo-error, #dc3545);
+  border: 1px solid var(--color-rojo-error, #dc3545);
+}

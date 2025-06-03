@@ -1,13 +1,13 @@
-/* src/components/admin/layout/Sidebar.module.css */
+
 .sidebar {
-  width: 260px; /* Un poco más ancho */
-  background-color: var(--color-primario, #2c3e50);
-  color: var(--color-texto-sobre-oscuro, white);
+  width: 260px;
+  background-color: var(--color-sidebar-fondo); /* Usamos la nueva variable */
+  color: var(--color-sidebar-enlace);           /* Texto general del sidebar */
   padding: 25px 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
-  height: 100vh; /* Asegura que ocupe toda la altura */
+  box-shadow: 2px 0 8px rgba(0,0,0,0.25); /* Sombra un poco más oscura */
+  height: 100vh;
   box-sizing: border-box;
 }
 
@@ -16,9 +16,10 @@
   font-size: 1.4em;
   margin-top: 0;
   margin-bottom: 30px;
-  border-bottom: 1px solid var(--color-secundario, #4a6fa5);
+  border-bottom: 1px solid var(--color-sidebar-borde-titulo); /* Borde con nuevo color */
   padding-bottom: 20px;
   letter-spacing: 0.5px;
+  color: var(--color-sidebar-texto-titulo); /* Color del título */
 }
 
 .navList {
@@ -28,36 +29,36 @@
 }
 
 .navItem {
-  margin-bottom: 12px;
+  margin-bottom: 10px; /* Un poco menos de espacio entre items */
 }
 
 .navLink {
-  color: var(--color-texto-sobre-oscuro, #ecf0f1);
+  color: var(--color-sidebar-enlace);
   text-decoration: none;
   display: block;
   padding: 12px 18px;
   border-radius: var(--radio-borde, 6px);
-  transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out;
-  font-size: 1.05em;
+  transition: background-color 0.2s ease-in-out, padding-left 0.2s ease-in-out, color 0.2s ease-in-out;
+  font-size: 1em; /* Ajustar tamaño de fuente de enlaces si es necesario */
 }
 
 .navLink:hover {
-  background-color: var(--color-secundario-hover, #5a82c2);
-  color: white;
-  padding-left: 22px; /* Efecto sutil al hacer hover */
+  background-color: var(--color-sidebar-enlace-hover-fondo);
+  color: var(--color-texto-sobre-oscuro); /* Asegurar buen contraste en hover */
+  padding-left: 22px;
 }
 
 .navLinkActive { /* Estilo para el NavLink activo */
-  background-color: var(--color-secundario, #4a6fa5);
-  color: white;
-  font-weight: bold;
+  background-color: var(--color-sidebar-enlace-activo-fondo);
+  color: var(--color-texto-sobre-oscuro); /* Asegurar buen contraste */
+  font-weight: 600; /* Un poco más de énfasis */
 }
 
 .logoutButton {
-  margin-top: auto; /* Empuja el botón al final */
+  margin-top: auto;
   padding: 12px 15px;
-  background-color: var(--color-error, #e74c3c);
-  color: var(--color-texto-sobre-oscuro, white);
+  background-color: var(--color-logout-fondo); /* Variable para el botón de logout */
+  color: var(--color-texto-sobre-oscuro);
   border: none;
   border-radius: var(--radio-borde, 6px);
   cursor: pointer;
@@ -68,5 +69,5 @@
 }
 
 .logoutButton:hover {
-  background-color: var(--color-error-hover, #c0392b);
+  background-color: var(--color-logout-fondo-hover);
 }
