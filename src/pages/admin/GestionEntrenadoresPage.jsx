@@ -8,67 +8,50 @@ function GestionEntrenadoresPage() {
   const [filtroFacultad, setFiltroFacultad] = useState(''); 
   const [mensajeError, setMensajeError] = useState('');
   const [cargando, setCargando] = useState(false);
+  const [mensajeGeneral, setMensajeGeneral] = useState({ texto: '', tipo: '' });
 
   // Estados para el modal de edición
   const [mostrarModalEditar, setMostrarModalEditar] = useState(false);
   const [entrenadorParaEditar, setEntrenadorParaEditar] = useState(null);
 
+  // Estados para el modal de desactivación 
+  const [mostrarModalDesactivar, setMostrarModalDesactivar] = useState(false);
+  const [entrenadorParaDesactivar, setEntrenadorParaDesactivar] = useState(null);
+
+
   const tokenAdmin = localStorage.getItem('authToken');
 
-  // Cargar lista de facultades para el filtro
   const cargarFacultades = useCallback(async () => {
-    if (!tokenAdmin) {
-      setMensajeError('Autenticación requerida.');
-      return;
-    }
+    if (!tokenAdmin) { setMensajeGeneral({ texto: 'Autenticación requerida para cargar facultades.', tipo: 'error' }); return; }
     try {
-      const respuesta = await fetch('http://localhost:3001/api/facultades', {
-        headers: { 'Authorization': `Bearer ${tokenAdmin}` },
-      });
-      if (!respuesta.ok) {
-        throw new Error(`Error ${respuesta.status} al cargar facultades`);
-      }
+      const respuesta = await fetch('http://localhost:3001/api/facultades', { headers: { 'Authorization': `Bearer ${tokenAdmin}` } });
+      if (!respuesta.ok) throw new Error(`Error ${respuesta.status} al cargar facultades`);
       const data = await respuesta.json();
       setFacultadesLista(data.facultades || []);
     } catch (error) {
       console.error("Error cargando facultades:", error);
-      setMensajeError(error.message || 'No se pudieron cargar las facultades.');
+      setMensajeGeneral({ texto: error.message || 'No se pudieron cargar las facultades.', tipo: 'error' });
     }
   }, [tokenAdmin]);
 
-  // Cargar lista de entrenadores (filtrada o completa)
   const cargarEntrenadores = useCallback(async () => {
-    if (!tokenAdmin) {
-      setMensajeError('Autenticación requerida.');
-      return;
-    }
-    setCargando(true);
-    setMensajeError('');
+    if (!tokenAdmin) { setMensajeGeneral({ texto: 'Autenticación requerida para cargar entrenadores.', tipo: 'error' }); return; }
+    setCargando(true); setMensajeGeneral({ texto: '', tipo: '' }); // Limpiar mensajes
     let url = 'http://localhost:3001/api/admin/entrenadores';
-    if (filtroFacultad) {
-      url += `?nombreFacultad=${encodeURIComponent(filtroFacultad)}`;
-    }
-
+    if (filtroFacultad) url += `?nombreFacultad=${encodeURIComponent(filtroFacultad)}`;
     try {
-      const respuesta = await fetch(url, {
-        headers: { 'Authorization': `Bearer ${tokenAdmin}` },
-      });
-      if (!respuesta.ok) {
-        const errorData = await respuesta.json().catch(() => ({})); // Intenta parsear error JSON
-        throw new Error(errorData.message || `Error ${respuesta.status} al cargar entrenadores`);
-      }
+      const respuesta = await fetch(url, { headers: { 'Authorization': `Bearer ${tokenAdmin}` } });
+      if (!respuesta.ok) { const errData = await respuesta.json().catch(() => ({})); throw new Error(errData.message || `Error ${respuesta.status}`);}
       const data = await respuesta.json();
       setEntrenadores(data.entrenadores || []);
     } catch (error) {
       console.error("Error cargando entrenadores:", error);
-      setMensajeError(error.message || 'No se pudieron cargar los entrenadores.');
-      setEntrenadores([]); // Limpiar lista en caso de error
-    } finally {
-      setCargando(false);
-    }
+      setMensajeGeneral({ texto: error.message || 'No se pudieron cargar los entrenadores.', tipo: 'error' });
+      setEntrenadores([]);
+    } finally { setCargando(false); }
   }, [tokenAdmin, filtroFacultad]);
 
-  useEffect(() => {
+ useEffect(() => {
     cargarFacultades();
   }, [cargarFacultades]);
 
@@ -80,20 +63,19 @@ function GestionEntrenadoresPage() {
     setFiltroFacultad(evento.target.value);
   };
 
-  const abrirModalEditar = (entrenador) => {
-    setEntrenadorParaEditar(entrenador); // Guardamos el entrenador completo
+  const manejarAbrirModalEditar = (entrenador) => {
+    setEntrenadorParaEditar(entrenador);
     setMostrarModalEditar(true);
+    setMensajeGeneral({ texto: '', tipo: '' }); // Limpiar mensajes generales
   };
-
-  const cerrarModalEditar = () => {
+  const manejarCerrarModalEditar = () => {
     setMostrarModalEditar(false);
     setEntrenadorParaEditar(null);
   };
-
-  const handleGuardadoExitoso = () => {
-    cerrarModalEditar();
-    cargarEntrenadores(); // Refrescar la lista de entrenadores
-    // Podrías añadir un mensaje de éxito temporal en la página principal si quieres
+  const manejarGuardadoExitosoEdicion = () => {
+    setMensajeGeneral({ texto: 'Entrenador actualizado exitosamente.', tipo: 'success' });
+    manejarCerrarModalEditar();
+    cargarEntrenadores();
   };
 
   const manejarEditar = (entrenadorId) => {
@@ -102,11 +84,52 @@ function GestionEntrenadoresPage() {
     // Aquí establecerías el estado para mostrar el modal y pasarías el entrenadorId o los datos del entrenador.
   };
 
+  const abrirModalConfirmacionDesactivar = (entrenador) => {
+    setEntrenadorParaDesactivar(entrenador);
+    setMostrarModalDesactivar(true);
+    setMensajeGeneral({ texto: '', tipo: '' }); // Limpiar mensajes generales
+  };
+
+  const cerrarModalConfirmacionDesactivar = () => {
+    setMostrarModalDesactivar(false);
+    setEntrenadorParaDesactivar(null);
+  };
+
+  const confirmarDesactivacion = async () => {
+    if (!entrenadorParaDesactivar || !tokenAdmin) {
+      setMensajeGeneral({ texto: 'Error: No se ha seleccionado un entrenador o falta autenticación.', tipo: 'error' });
+      cerrarModalConfirmacionDesactivar();
+      return;
+    }
+    setCargando(true); // Podrías tener un estado de carga específico para el modal si prefieres
+    try {
+      const respuesta = await fetch(`http://localhost:3001/api/admin/entrenadores/${entrenadorParaDesactivar.identrenador}/desactivar`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${tokenAdmin}`,
+        },
+      });
+      const dataRespuesta = await respuesta.json();
+      if (respuesta.ok) {
+        setMensajeGeneral({ texto: dataRespuesta.message || 'Entrenador desactivado exitosamente.', tipo: 'success' });
+        cargarEntrenadores(); // Refrescar la lista
+      } else {
+        setMensajeGeneral({ texto: dataRespuesta.message || `Error al desactivar: ${respuesta.status}`, tipo: 'error' });
+      }
+    } catch (error) {
+      console.error("Error al desactivar entrenador:", error);
+      setMensajeGeneral({ texto: 'Error de conexión o del servidor al intentar desactivar.', tipo: 'error' });
+    } finally {
+      setCargando(false);
+      cerrarModalConfirmacionDesactivar();
+    }
+  };
+
   return (
     <div className={styles.gestionPageContainer}>
       <h2 className={styles.tituloPagina}>Gestión de Entrenadores</h2>
 
-      {mensajeError && <p className={`${styles.message} ${styles.error}`}>{mensajeError}</p>}
+      {mensajeGeneral.texto && <p className={`${styles.message} ${mensajeGeneral.tipo === 'error' ? styles.error : styles.success}`}>{mensajeGeneral.texto}</p>}
 
       <div className={styles.filtrosContainer}>
         <label htmlFor="filtroFacultad" className={styles.filtroLabel}>Filtrar por Facultad:</label>
@@ -127,7 +150,7 @@ function GestionEntrenadoresPage() {
 
       {cargando && <p>Cargando entrenadores...</p>}
 
-      {!cargando && entrenadores.length === 0 && !mensajeError && (
+      {!cargando && entrenadores.length === 0 && !mensajeGeneral.texto && (
         <p>No se encontraron entrenadores con los filtros aplicados.</p>
       )}
 
@@ -138,9 +161,9 @@ function GestionEntrenadoresPage() {
               <th>Nombres</th>
               <th>Apellidos</th>
               <th>Correo</th>
-              <th>Tipo Doc.</th>
-              <th>Número Doc.</th>
-              <th>Facultades Asignadas</th>
+              <th>Documento</th>
+              <th>Estado Contrato</th>
+              <th>Facultades</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -150,35 +173,68 @@ function GestionEntrenadoresPage() {
                 <td>{entrenador.nombresentrenador}</td>
                 <td>{entrenador.apellidosentrenador}</td>
                 <td>{entrenador.correoentrenador}</td>
-                <td>{entrenador.tipodocumentoentrenador}</td>
-                <td>{entrenador.numerodocumentoentrenador}</td>
+                <td>{entrenador.tipodocumentoentrenador} - {entrenador.numerodocumentoentrenador}</td>
+                {/* === MOSTRAR ESTADO CONTRATO === */}
+                <td className={entrenador.estadocontrato === 'Activo' ? styles.estadoActivo : styles.estadoInactivo}>
+                  {entrenador.estadocontrato}
+                </td>
                 <td>
                   {entrenador.facultadesasignadas && entrenador.facultadesasignadas.length > 0
                     ? entrenador.facultadesasignadas.join(', ')
                     : 'N/A'}
                 </td>
-                
-                <td>
-                  {/* 2. Llamar a abrirModalEditar con los datos del entrenador */}
+                <td className={styles.accionesCell}>
                   <button
-                    onClick={() => abrirModalEditar(entrenador)}
+                    onClick={() => manejarAbrirModalEditar(entrenador)}
                     className={styles.botonEditar}
+                    title="Editar Información"
                   >
                     Editar
                   </button>
+                  {/* === NUEVO BOTÓN DESACTIVAR (solo si está Activo) === */}
+                  {entrenador.estadocontrato === 'Activo' && (
+                    <button
+                      onClick={() => abrirModalConfirmacionDesactivar(entrenador)}
+                      className={styles.botonDesactivar}
+                      title="Desactivar Entrenador"
+                    >
+                      Desactivar
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      {/* 3. Renderizar el modal condicionalmente */}
+      {mostrarModalDesactivar && entrenadorParaDesactivar && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContentConfirm}>
+            <h3>Confirmar Desactivación</h3>
+            <p>
+              ¿Está seguro de que desea desactivar al entrenador <br />
+              <strong>{entrenadorParaDesactivar.nombresentrenador} {entrenadorParaDesactivar.apellidosentrenador}</strong>?
+            </p>
+            <p className={styles.modalNota}>
+              Esta acción establecerá su fecha de fin de contrato a la fecha actual.
+            </p>
+            <div className={styles.botonesModal}>
+              <button onClick={confirmarDesactivacion} className={styles.botonConfirmarDesactivar} disabled={cargando}>
+                {cargando ? 'Desactivando...' : 'Sí, Desactivar'}
+              </button>
+              <button onClick={cerrarModalConfirmacionDesactivar} className={styles.botonCancelarModal} disabled={cargando}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {mostrarModalEditar && entrenadorParaEditar && (
         <EditarEntrenadorModal
           entrenador={entrenadorParaEditar}
           listaTodasLasFacultades={facultadesLista} // Pasamos la lista completa de facultades
-          onClose={cerrarModalEditar}
-          onSave={handleGuardadoExitoso}
+          onClose={manejarCerrarModalEditar}
+          onSave={manejarGuardadoExitosoEdicion}
         />
       )}
     </div>

@@ -96,3 +96,108 @@
   color: #dc3545;
   border: 1px solid #dc3545;
 }
+
+.accionesCell {
+  display: flex;
+  gap: 8px; /* Espacio entre botones de acción */
+}
+
+.botonDesactivar {
+  background-color: var(--color-error, #e74c3c); /* Rojo */
+  color: white;
+  padding: var(--espacio-xs, 6px) var(--espacio-sm, 10px);
+  border: none;
+  border-radius: var(--radio-borde, 4px);
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.botonDesactivar:hover {
+  background-color: var(--color-error-hover, #c0392b);
+}
+
+/* Estilos para el Modal de Confirmación de Desactivación */
+.modalOverlay { /* Puedes reutilizar el de EditarEntrenadorModal si es igual */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.modalContentConfirm { /* Nombre diferente para evitar conflictos con el modal de edición */
+  background-color: var(--color-fondo-contenedor, white);
+  padding: 30px 35px;
+  border-radius: var(--radio-borde, 10px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  width: 90%;
+  max-width: 480px; /* Ancho para el modal de confirmación */
+  color: var(--color-texto-principal);
+  text-align: center; /* Centrar contenido del modal de confirmación */
+}
+
+.modalContentConfirm h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--color-primario-uva);
+  font-size: 1.5em;
+}
+
+.modalContentConfirm p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+  font-size: 1.05em;
+}
+
+.modalNota {
+  font-size: 0.9em !important; /* Forzar tamaño más pequeño */
+  color: var(--color-texto-secundario) !important; /* Color más suave */
+  margin-top: 0;
+  margin-bottom: 25px !important;
+}
+
+.botonesModal { /* Reutilizable para otros modales */
+  display: flex;
+  justify-content: center; /* Centrar botones en modal de confirmación */
+  gap: 20px; /* Espacio entre botones */
+  margin-top: 30px;
+}
+
+.botonConfirmarDesactivar {
+  background-color: var(--color-error, #dc3545); /* Rojo */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+}
+.botonConfirmarDesactivar:hover {
+  background-color: var(--color-error-hover, #c82333);
+}
+.botonConfirmarDesactivar:disabled {
+  background-color: #ccc;
+}
+
+.botonCancelarModal { /* Un estilo genérico para botones de cancelar en modales */
+  background-color: #6c757d; /* Gris */
+  color: white;
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+}
+.botonCancelarModal:hover {
+  background-color: #5a6268;
+}
+
+/* Estilos para el estado en la tabla */
+.estadoActivo {
+  color: var(--color-verde-exito, green);
+  font-weight: bold;
+}
+.estadoInactivo {
+  color: var(--color-error, red);
+  font-style: italic;
+}
